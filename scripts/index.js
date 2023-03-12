@@ -1,7 +1,7 @@
 import { recipes } from "../data/recipes.js";
 import { getRecettes, getIngredients, getAppareils, getUstensils } from "./dataProvider.js";
 import { getCard } from "../factories/card.js";
-import { setFilterInput, setWordSearch, setFilterSearch, setDropDownFilter, setBtnDrop } from "./search.js";
+import { setFilterInput, setWordSearch, setDropDownFilter, setBtnDrop } from "./search.js";
 
 const galery = document.querySelector('#galery');
 const dropIngredient = document.querySelector('.ingredient-drop');
@@ -20,14 +20,14 @@ recettes.forEach((r) => {
     galery.appendChild(card);
 })
 
-/* ingredients.forEach((i) => {
+ingredients.forEach((i) => {
     const button = document.createElement('button');
     button.classList.add('btn-filtre');
     button.classList.add('ingredient');
     button.innerText = i;
     dropIngredient.appendChild(button);
     setBtnDrop(button);
-    setFilterSearch(button);
+    /* setFilterSearch(button); */
 })
 
 appareils.forEach((a) => {
@@ -37,7 +37,7 @@ appareils.forEach((a) => {
     button.innerText = a;
     dropAppareils.appendChild(button);
     setBtnDrop(button);
-    setFilterSearch(button);
+    /* setFilterSearch(button); */
 })
 
 ustensils.forEach((u) => {
@@ -47,9 +47,9 @@ ustensils.forEach((u) => {
     button.innerText = u;
     dropUstensile.appendChild(button);
     setBtnDrop(button);
-    setFilterSearch(button);
+    /* setFilterSearch(button); */
 })
- */
+
 
 
 
@@ -57,11 +57,6 @@ setWordSearch(recettes);
 setFilterInput(ingredients, appareils, ustensils);
 setDropDownFilter(ingredients, appareils, ustensils);
 
-
-
-/* const ingredients = getIngredients();
-const appareils = getAppareils();
-const ustensils = getUstensils(); */
 
 
 

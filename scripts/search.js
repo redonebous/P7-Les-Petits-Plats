@@ -45,21 +45,6 @@ function setWordSearch() {
     })
 }
 
-function setFilterSearch(btn) {
-    btn.addEventListener('click', (e) => {
-
-        if (e.target.classList.contains('ingredient')) state.ingredients.push(e.target.innerText);
-        if (e.target.classList.contains('appareil')) state.appareils.push(e.target.innerText);
-        if (e.target.classList.contains('ustensile')) state.ustensils.push(e.target.innerText);
-
-        /* if (e.target.classList.contains('ingredient')) state.ingredients = init.ingredients.filter((i) => i == e.target.innerText); */
-
-
-        globalSearch();
-
-    })
-
-}
 
 function removeFilterSearch(span) {
     span.addEventListener('click', (e) => {
@@ -70,7 +55,7 @@ function removeFilterSearch(span) {
             state.appareils = state.appareils.filter((a) => span.innerText != a);
         }
         if (span.classList.contains('select-ustensile')) {
-            state.ustensils = state.ingredients = state.ustensils.filter((u) => span.innerText != u);
+            state.ustensils = state.ustensils.filter((u) => span.innerText != u);
         }
 
         globalSearch();
@@ -133,19 +118,15 @@ function globalSearch() {
     state.data = state.data.filter((item, index) => state.data.indexOf(item) === index);
 
     state.data.forEach((data) => {
-        console.log(checkIngredients(data));
         if (checkIngredients(data) && checkAppareils(data) && checkUstensils(data)) state.display.push(data);
     })
 
-    console.log(state.ingredients);
-
     state.display = state.display.filter((item, index) => state.display.indexOf(item) === index);
-
-
-    console.log(state.display);
 
     if (state.display.length > 0) {
         displayGalery(state.display);
+    } else if (state.data.length > 0 && state.display.length == 0) {
+        displayGalery([])
     } else {
         displayGalery(state.recettes);
     }
@@ -168,8 +149,18 @@ function checkIngredients(data) {
             }
         })
 
-        if (data.ingredients.length == check.length) bool = true;
+        if (arr.length == check.length) bool = true;
     }
+
+    console.log(arr);
+    console.log(check);
+    console.log(bool);
+    console.log(state.ingredients);
+    console.log(state.ustensils);
+
+
+
+
 
     return bool;
 }
@@ -185,6 +176,8 @@ function checkAppareils(data) {
             }
         })
     }
+
+    if (state.appareils.length > 1) bool = false;
 
     return bool;
 }
@@ -274,7 +267,6 @@ function fillFilterDrop(drop, data, type) {
         button.innerText = item;
         drop.appendChild(button);
         setBtnDrop(button);
-        setFilterSearch(button);
     })
 
 }
@@ -305,11 +297,6 @@ function setDropDownFilter(i, a, u) {
             })
 
             handlePlaceHolderChange(filtre);
-
-
-            fillFilterDrop(dropIngredient, i, 'ingredient');
-            fillFilterDrop(dropAppareils, a, 'appareil');
-            fillFilterDrop(dropUstensile, u, 'ustensile');
 
         })
     });
@@ -351,6 +338,13 @@ function setBtnDrop(btn) {
         if (e.target.classList.contains('appareil')) span.classList.add('select-appareil');
         if (e.target.classList.contains('ustensile')) span.classList.add('select-ustensile');
 
+        if (e.target.classList.contains('ingredient')) state.ingredients.push(e.target.innerText);
+        if (e.target.classList.contains('appareil')) state.appareils.push(e.target.innerText);
+        if (e.target.classList.contains('ustensile')) state.ustensils.push(e.target.innerText);
+
+
+        globalSearch();
+
         selected.appendChild(span);
 
         removeFilterSearch(span);
@@ -368,6 +362,7 @@ function setSelectedDrop(span) {
         btnNew.innerText = span.innerText;
         btnNew.classList.add('btn-filtre');
 
+
         if (span.classList.contains('select-ingredient')) {
             btnNew.classList.add('ingredient');
             document.querySelector('.ingredient-drop').appendChild(btnNew);
@@ -381,7 +376,6 @@ function setSelectedDrop(span) {
             document.querySelector('.ustensile-drop').appendChild(btnNew);
         }
 
-        setFilterSearch(btnNew);
         setBtnDrop(btnNew);
 
         span.remove();
@@ -417,4 +411,4 @@ function handlePlaceHolderChange(filtre) {
 
 
 
-export { setWordSearch, setFilterInput, setFilterSearch, removeFilterSearch, setDropDownFilter, setBtnDrop }; 
+export { setWordSearch, setFilterInput, removeFilterSearch, setDropDownFilter, setBtnDrop }; 
