@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <link rel="stylesheet" href="./style/style.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/43aee3440f.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap" rel="stylesheet">
+    <title>Les petits plats</title>
+</head>
+<body>
+    <header>
+        <i class="fa-solid fa-burger"></i>
+        <span class="title">Les petits plats</span>
+    </header>
+
+    <section class="search-section">
+        <label for="search" id="label-input">
+            <input type="text" name="search" id="search-input" placeholder="Rechercher une recette">
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </label>
+        <div class="filtre-selected"></div>
+        <div class="filtre-wrapper">
+            <div class="filtre filtre-ingredient">
+                <label for="ingredient">
+                    <input type="text" class="input-filtre" name="ingredient" id="search-ingredient" placeholder="Ingrédients">
+                    <i class="fa-solid fa-chevron-down open-drop open-drop-ingredient"></i>
+                </label>    
+                <div class="drop ingredient-drop"></div>
+            </div>
+            <div class="filtre filtre-appareil">
+                <label for="appareils">
+                    <input type="text" class="input-filtre" name="appareils" id="search-appareils" placeholder="Appareils">
+                    <i class="fa-solid fa-chevron-down open-drop open-drop-appareils"></i>
+                </label>
+                <div class="drop appareil-drop"></div>
+            </div>
+            <div class="filtre filtre-ustensile">
+                <label for="ustensile">
+                    <input type="text" class="input-filtre" name="ustensile" id="search-ustensile" placeholder="Ustensiles">
+                    <i class="fa-solid fa-chevron-down open-drop open-drop-ustensile"></i>
+                </label>
+                <div class="drop ustensile-drop"></div>
+            </div>
+        </div>
+    </section>
+
+    <main id="galery">
+        
+    </main>
+
+    <script type="module" src="./scripts/index.js"></script>
+</body>
+</html>

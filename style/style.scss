@@ -1,0 +1,243 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    list-style: none;
+}
+
+body {
+    font-family: "DM Sans", sans-serif;
+    margin: 0% 5%;
+}
+
+header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #D04F4F;
+    font-size: 36px;
+    gap: 10px;
+    font-weight: bold;
+    margin-top: 3%;
+
+    i {
+        font-size: 40px;
+    }
+}
+
+.search-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 15px 0px;
+
+    #label-input {
+        position: relative;
+
+        #search-input {
+            width: 100%;
+            height: 50px;
+            background-color: #E7E7E7;
+            border: none;
+            padding: 0% 2%;
+            border-radius: 5px;
+        }
+
+        i {
+            position: absolute;
+            font-size: 32px;
+            top: 50%;
+            right: 3%;
+            transform: translateY(-50%);
+        }
+
+    }
+
+    .filtre-selected {
+        display: flex;
+        color: white;
+        gap: 10px;
+
+        .selected {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            padding: 5px;
+            height: 37px;
+            width: auto;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .select-ingredient {
+            background-color: #3282F7;
+        }
+
+        .select-appareil {
+            background-color: #68D9A4;
+        }
+
+        .select-ustensile {
+            background-color: #ED6454;
+        }
+    }
+
+
+    .filtre-wrapper {
+        display: flex;
+        gap: 10px;
+
+        .filtre {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 60px;
+            width: 170px;
+            border-radius: 5px;
+
+            label {
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                color: white;
+                padding: 0px 10px;
+
+                input {
+                    width: 80%;
+                    border: none;
+                    background-color: transparent;
+
+                    &::placeholder {
+                        color: white;
+                    }
+                }
+
+                i {
+                    cursor: pointer;
+                }
+            }
+
+            .drop {
+                display: none;
+            }
+
+        }
+
+        .drop-active {
+            height: auto;
+            width: auto;
+
+            label {
+                height: 60px;
+                align-items: center;
+
+                i {
+                    transform: rotate(0.5turn);
+                }
+
+            }
+
+            .drop {
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr;
+                padding: 10px;
+                gap: 5px;
+
+                .btn-filtre {
+                    border: none;
+                    background-color: transparent;
+                    color: white;
+                    text-align: start;
+                    cursor: pointer;
+                }
+            }
+
+        }
+
+        .filtre-ingredient {
+            background-color: #3282F7;
+        }
+
+        .filtre-appareil {
+            background-color: #68D9A4;
+        }
+
+        .filtre-ustensile {
+            background-color: #ED6454;
+        }
+    }
+}
+
+#galery {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 30px;
+
+    article {
+        width: 100%;
+        border-radius: 5px;
+
+        display: flex;
+        flex-direction: column;
+
+        background-color: #E7E7E7;
+
+
+        .img-card {
+            height: 178px;
+            background-color: #C7BEBE;
+            border-radius: 5px 5px 0px 0px;
+        }
+
+        .top-card {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 20px 0px 20px;
+        }
+
+        .recette {
+            height: 178px;
+            display: flex;
+            padding: 20px;
+            gap: 5px;
+
+
+            .side-left {
+                width: 50%;
+
+                .title {
+                    font-size: 16px;
+                    width: 100%;
+                }
+
+                .list {
+                    font-size: 12px;
+                }
+            }
+
+            .side-right {
+                width: 50%;
+
+                display: flex;
+                flex-direction: column;
+
+                .time {}
+
+                .desc {
+                    display: -webkit-box;
+                    -webkit-line-clamp: 6;
+                    -webkit-box-orient: vertical;
+                    font-size: 12px;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+            }
+        }
+
+    }
+}
