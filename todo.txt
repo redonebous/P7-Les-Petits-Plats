@@ -1,12 +1,7 @@
-=> Detecter la valeur de l'input 
-=> Verifier si ça fait + de 3 charactères 
-=> utiliser include 
-=> 
-
 Objectif : Recherche par mot clé - OK
 
-Objectif : Recherche par filtre 
+Objectif : Recherche par filtre croisé - OK
 
-- Modifier le state à chaque fonction de recherche 
-- Générer la galery à partir du state 
-- Vérifier tous les doublons
+Objectif : Croiser la recherche par mot clé et par filtre - OK
+
+Objectif : La recherche par mot clé impacte sur les filtres proposés - OK

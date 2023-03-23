@@ -6,17 +6,12 @@ let state = {
     recettes: getRecettes(),
     data: [],
     display: [],
-    search: [],
+    search: "",
     ingredients: [],
     appareils: [],
     ustensils: []
 }
 
-let init = {
-    ingredients: getIngredients(),
-    appareils: getAppareils(),
-    ustensils: getUstensils()
-}
 
 const dropIngredient = document.querySelector('.ingredient-drop');
 const dropAppareils = document.querySelector('.appareil-drop');
@@ -35,13 +30,11 @@ function setWordSearch() {
 
     searchInput.addEventListener('input', (e) => {
         let input = e.target.value.toLowerCase();
+        state.search = "";
         if (input.length > 3) {
-            state.recettes.forEach((r) => {
-                let str = r.name.toLowerCase();
-                if (str.includes(input)) state.search.push(r);
-            });
-            globalSearch();
+            state.search = input;
         }
+        globalSearch();
     })
 }
 
@@ -76,21 +69,34 @@ function displayGalery(data) {
 // Génère la galery à partir de l'état du state
 function globalSearch() {
 
+    state.data = [];
+    state.display = [];
 
-    if (state.search.length > 0) {
-        state.data = state.search
-    } else {
-        state.data = [];
+    state.recettes.forEach((r) => {
+        let titre = r.name.toLowerCase();
+        let desc = r.description.toLowerCase();
+        let ingredients = r.ingredients;
+
+        let input = state.search;
+
+        if (titre.includes(input) || desc.includes(input) || checkWordIngredient(input, r)) {
+            state.data.push(r)
+        }
+
+    });
+
+    if (state.data.length === 0 && state.search.length === 0) {
+        state.data = state.recettes;
     }
 
 
-    state.display = [];
-
     if (state.ingredients.length > 0) {
         state.ingredients.forEach((i) => {
-            state.recettes.forEach((r) => {
+            state.data.forEach((r) => {
                 r.ingredients.forEach((ingredient) => {
-                    if (ingredient[0] == i) state.data.push(r);
+                    if (ingredient[0] == i) state.data.filter((data) => {
+                        data.id === r.id
+                    });
 
                 })
             })
@@ -99,21 +105,26 @@ function globalSearch() {
 
     if (state.appareils.length > 0) {
         state.appareils.forEach((a) => {
-            state.recettes.forEach((r) => {
-                if (a == r.appareils) state.data.push(r);
+            state.data.forEach((r) => {
+                if (a == r.appareils) state.data.filter((data) => {
+                    data.id === r.id
+                });
             })
         })
     }
 
     if (state.ustensils.length > 0) {
         state.ustensils.forEach((u) => {
-            state.recettes.forEach((r) => {
+            state.data.forEach((r) => {
                 r.ustensils.forEach((ustensile) => {
-                    if (ustensile == u) state.data.push(r);
+                    if (ustensile == u) state.data.filter((data) => {
+                        data.id === r.id
+                    });
                 })
             })
         })
     }
+
 
     state.data = state.data.filter((item, index) => state.data.indexOf(item) === index);
 
@@ -123,14 +134,30 @@ function globalSearch() {
 
     state.display = state.display.filter((item, index) => state.display.indexOf(item) === index);
 
+    inputIngredient.dispatchEvent(new Event('input'));
+    inputAppareils.dispatchEvent(new Event('input'));
+    inputUstensile.dispatchEvent(new Event('input'));
+
     if (state.display.length > 0) {
         displayGalery(state.display);
     } else if (state.data.length > 0 && state.display.length == 0) {
+        displayGalery([])
+    } else if (state.data.length === 0 && state.search.length > 0) {
         displayGalery([])
     } else {
         displayGalery(state.recettes);
     }
 
+}
+
+function checkWordIngredient(input, r) {
+    let bool = false;
+
+    r.ingredients.forEach((i) => {
+        if (i.includes(input)) bool = true;
+    })
+
+    return bool;
 }
 
 function checkIngredients(data) {
@@ -151,16 +178,6 @@ function checkIngredients(data) {
 
         if (arr.length == check.length) bool = true;
     }
-
-    console.log(arr);
-    console.log(check);
-    console.log(bool);
-    console.log(state.ingredients);
-    console.log(state.ustensils);
-
-
-
-
 
     return bool;
 }
@@ -201,57 +218,94 @@ function checkUstensils(data) {
 }
 
 
-
-
 function setFilterInput(i, a, u) {
 
 
     inputIngredient.addEventListener('input', (e) => {
-        let input = e.target.value.toLowerCase();
-        let data = [];
+        let input = e.target.value.toLocaleLowerCase('fr');
+        let data = i;
 
-        if (input.length > 0) {
+        if (state.display.length > 0) {
+            data = [];
+
+            state.display.forEach((recette) => {
+                recette.ingredients.forEach((i) => {
+                    data.push(i[0]);
+                })
+            })
+
+            data = data.filter((item, index) => data.indexOf(item) === index);
+
+            if (input.length > 0) data = data.filter((data) => data.toLocaleLowerCase('fr').includes(input));
+        }
+
+        if (input.length > 0 && state.display.length === 0) {
+            data = [];
             i.forEach((i) => {
                 let str = i.toLowerCase();
                 if (str.includes(input)) data.push(i);
             });
-            fillFilterDrop(dropIngredient, data, 'ingredient');
-        } else {
-            fillFilterDrop(dropIngredient, i, 'ingredient')
+
         }
 
+        fillFilterDrop(dropIngredient, data, 'ingredient');
     });
 
     inputAppareils.addEventListener('input', (e) => {
         let input = e.target.value.toLowerCase();
-        let data = [];
+        let data = a;
 
-        if (input.length > 0) {
+        if (state.display.length > 0) {
+            data = [];
+
+            state.display.forEach((recette) => {
+                data.push(recette.appareils);
+            })
+
+            data = data.filter((item, index) => data.indexOf(item) === index);
+
+            if (input.length > 0) data = data.filter((data) => data.toLocaleLowerCase('fr').includes(input));
+        }
+
+        if (input.length > 0 && state.display.length === 0) {
             a.forEach((a) => {
                 let str = a.toLowerCase();
                 if (str.includes(input)) data.push(a);
             });
-            fillFilterDrop(dropAppareils, data, 'appareil');
-        } else {
-            fillFilterDrop(dropAppareils, a, 'appareil');
         }
 
+        fillFilterDrop(dropAppareils, data, 'appareil');
     });
+
+
 
     inputUstensile.addEventListener('input', (e) => {
         let input = e.target.value.toLowerCase();
         let data = [];
 
-        if (input.length > 0) {
+        if (state.display.length > 0) {
+            data = [];
+
+            state.display.forEach((recette) => {
+                recette.ustensils.forEach((u) => {
+                    data.push(u);
+                })
+            })
+
+            data = data.filter((item, index) => data.indexOf(item) === index);
+
+            if (input.length > 0) data = data.filter((data) => data.toLocaleLowerCase('fr').includes(input));
+        }
+
+
+        if (input.length > 0 && state.display.length === 0) {
             u.forEach((u) => {
                 let str = u.toLowerCase();
                 if (str.includes(input)) data.push(u);
             });
-            fillFilterDrop(dropUstensile, data, 'ustensile')
-        } else {
-            fillFilterDrop(dropUstensile, u, 'ustensile')
         }
 
+        fillFilterDrop(dropUstensile, data, 'ustensile')
     });
 
 }
@@ -284,6 +338,7 @@ function setDropDownFilter(i, a, u) {
 
             if (filtre.classList.contains('drop-active')) {
                 filtre.classList.remove('drop-active');
+
             } else if (!filtre.classList.contains('drop-active')) {
                 filtres.forEach((f) => {
                     f.classList.remove('drop-active');
@@ -296,6 +351,10 @@ function setDropDownFilter(i, a, u) {
                 input.value = "";
             })
 
+            if (filtre.classList.contains('drop-active')) {
+                filtre.querySelector("input").dispatchEvent(new Event("input"));
+            }
+
             handlePlaceHolderChange(filtre);
 
         })
@@ -303,6 +362,8 @@ function setDropDownFilter(i, a, u) {
 
     inputFilters.forEach((input) => {
         input.addEventListener('input', (e) => {
+
+
             let filtre = e.target.parentNode.parentNode;
             if (e.target.value.length > 0 && !filtre.classList.contains('drop-active')) {
                 // Ouverture du dropdown via l'input
@@ -313,16 +374,10 @@ function setDropDownFilter(i, a, u) {
                 })
                 filtre.classList.add('drop-active');
 
-
-                handlePlaceHolderChange(filtre);
-            } else if (e.target.value.length == 0 && filtre.classList.contains('drop-active')) {
-                // Fermeture du dropdown via l'input
-                filtre.classList.remove('drop-active');
                 handlePlaceHolderChange(filtre);
             }
         })
     })
-
 }
 
 
@@ -361,7 +416,6 @@ function setSelectedDrop(span) {
         let btnNew = document.createElement('button')
         btnNew.innerText = span.innerText;
         btnNew.classList.add('btn-filtre');
-
 
         if (span.classList.contains('select-ingredient')) {
             btnNew.classList.add('ingredient');
