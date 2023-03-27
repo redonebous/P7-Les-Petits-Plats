@@ -140,7 +140,7 @@ function globalSearch() {
 
     if (state.display.length > 0) {
         displayGalery(state.display);
-    } else if (state.data.length > 0 && state.display.length == 0) {
+    } else if (state.data.length > 0 && state.display.length === 0) {
         displayGalery([])
     } else if (state.data.length === 0 && state.search.length > 0) {
         displayGalery([])
@@ -224,6 +224,8 @@ function setFilterInput(i, a, u) {
     inputIngredient.addEventListener('input', (e) => {
         let input = e.target.value.toLocaleLowerCase('fr');
         let data = i;
+        let selected = Array.from(document.querySelectorAll('.select-ingredient'));
+
 
         if (state.display.length > 0) {
             data = [];
@@ -248,12 +250,17 @@ function setFilterInput(i, a, u) {
 
         }
 
+        if (selected.length > 0) {
+            selected.forEach((filtre) => data = data.filter((drop) => drop.trim() != filtre.textContent.trim()));
+        }
+
         fillFilterDrop(dropIngredient, data, 'ingredient');
     });
 
     inputAppareils.addEventListener('input', (e) => {
-        let input = e.target.value.toLowerCase();
+        let input = e.target.value.toLocaleLowerCase('fr');
         let data = a;
+        let selected = Array.from(document.querySelectorAll('.select-appareil'));
 
         if (state.display.length > 0) {
             data = [];
@@ -274,14 +281,22 @@ function setFilterInput(i, a, u) {
             });
         }
 
+        console.log(data);
+
+        if (selected.length > 0) {
+            selected.forEach((filtre) => data = data.filter((drop) => drop.trim() != filtre.textContent.trim()));
+        }
+        console.log(data);
+
         fillFilterDrop(dropAppareils, data, 'appareil');
     });
 
 
 
     inputUstensile.addEventListener('input', (e) => {
-        let input = e.target.value.toLowerCase();
-        let data = [];
+        let input = e.target.value.toLocaleLowerCase('fr');
+        let data = u;
+        let selected = Array.from(document.querySelectorAll('.select-ustensile'));
 
         if (state.display.length > 0) {
             data = [];
@@ -303,6 +318,11 @@ function setFilterInput(i, a, u) {
                 let str = u.toLowerCase();
                 if (str.includes(input)) data.push(u);
             });
+        }
+
+
+        if (selected.length > 0) {
+            selected.forEach((filtre) => data = data.filter((drop) => drop.trim() != filtre.textContent.trim()));
         }
 
         fillFilterDrop(dropUstensile, data, 'ustensile')
@@ -398,7 +418,6 @@ function setBtnDrop(btn) {
         if (e.target.classList.contains('ustensile')) state.ustensils.push(e.target.innerText);
 
 
-        globalSearch();
 
         selected.appendChild(span);
 
@@ -406,6 +425,7 @@ function setBtnDrop(btn) {
         setSelectedDrop(span);
 
         btn.remove();
+        globalSearch();
 
     })
 }
