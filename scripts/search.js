@@ -75,8 +75,6 @@ function globalSearch() {
     state.recettes.forEach((r) => {
         let titre = r.name.toLowerCase();
         let desc = r.description.toLowerCase();
-        let ingredients = r.ingredients;
-
         let input = state.search;
 
         if (titre.includes(input) || desc.includes(input) || checkWordIngredient(input, r)) {
@@ -88,43 +86,6 @@ function globalSearch() {
     if (state.data.length === 0 && state.search.length === 0) {
         state.data = state.recettes;
     }
-
-
-    if (state.ingredients.length > 0) {
-        state.ingredients.forEach((i) => {
-            state.data.forEach((r) => {
-                r.ingredients.forEach((ingredient) => {
-                    if (ingredient[0] == i) state.data.filter((data) => {
-                        data.id === r.id
-                    });
-
-                })
-            })
-        })
-    }
-
-    if (state.appareils.length > 0) {
-        state.appareils.forEach((a) => {
-            state.data.forEach((r) => {
-                if (a == r.appareils) state.data.filter((data) => {
-                    data.id === r.id
-                });
-            })
-        })
-    }
-
-    if (state.ustensils.length > 0) {
-        state.ustensils.forEach((u) => {
-            state.data.forEach((r) => {
-                r.ustensils.forEach((ustensile) => {
-                    if (ustensile == u) state.data.filter((data) => {
-                        data.id === r.id
-                    });
-                })
-            })
-        })
-    }
-
 
     state.data = state.data.filter((item, index) => state.data.indexOf(item) === index);
 
@@ -168,7 +129,6 @@ function checkIngredients(data) {
 
     if (state.ingredients.length > 0) {
         state.ingredients.forEach((i) => {
-            arr.filter((item, index) => arr.indexOf(item) === index);
             if (arr.includes(i)) {
                 check.push(i);
             } else {
@@ -281,12 +241,10 @@ function setFilterInput(i, a, u) {
             });
         }
 
-        console.log(data);
 
         if (selected.length > 0) {
             selected.forEach((filtre) => data = data.filter((drop) => drop.trim() != filtre.textContent.trim()));
         }
-        console.log(data);
 
         fillFilterDrop(dropAppareils, data, 'appareil');
     });
