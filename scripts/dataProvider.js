@@ -2,8 +2,7 @@ import { recipes } from "../data/recipes.js";
 
 function getRecettes() {
     let data = [];
-
-    recipes.forEach((r) => {
+    for (let r of recipes) {
         let o = {
             id: r.id,
             name: r.name,
@@ -15,7 +14,9 @@ function getRecettes() {
         }
 
         data.push(o);
-    })
+    }
+
+
     return data;
 }
 

@@ -66,73 +66,38 @@ function displayGalery(data) {
 }
 
 
-// Génère la galery à partir de l'état du state
+// A modifier => Ne pas utiliser de methode de l'objet array créer des boucles fonctionnant comme filter / forEach / etc ...
 function globalSearch() {
 
     state.data = [];
     state.display = [];
 
-    state.recettes.forEach((r) => {
+    for (let r of state.recettes) {
         let titre = r.name.toLowerCase();
         let desc = r.description.toLowerCase();
-        let ingredients = r.ingredients;
 
         let input = state.search;
 
         if (titre.includes(input) || desc.includes(input) || checkWordIngredient(input, r)) {
             state.data.push(r)
         }
+    }
 
-    });
 
     if (state.data.length === 0 && state.search.length === 0) {
         state.data = state.recettes;
     }
 
-
-    if (state.ingredients.length > 0) {
-        state.ingredients.forEach((i) => {
-            state.data.forEach((r) => {
-                r.ingredients.forEach((ingredient) => {
-                    if (ingredient[0] == i) state.data.filter((data) => {
-                        data.id === r.id
-                    });
-
-                })
-            })
-        })
-    }
-
-    if (state.appareils.length > 0) {
-        state.appareils.forEach((a) => {
-            state.data.forEach((r) => {
-                if (a == r.appareils) state.data.filter((data) => {
-                    data.id === r.id
-                });
-            })
-        })
-    }
-
-    if (state.ustensils.length > 0) {
-        state.ustensils.forEach((u) => {
-            state.data.forEach((r) => {
-                r.ustensils.forEach((ustensile) => {
-                    if (ustensile == u) state.data.filter((data) => {
-                        data.id === r.id
-                    });
-                })
-            })
-        })
-    }
+    state.data = filter(state.data);
 
 
-    state.data = state.data.filter((item, index) => state.data.indexOf(item) === index);
-
-    state.data.forEach((data) => {
+    for (let data of state.data) {
         if (checkIngredients(data) && checkAppareils(data) && checkUstensils(data)) state.display.push(data);
-    })
+    }
 
-    state.display = state.display.filter((item, index) => state.display.indexOf(item) === index);
+    state.display = filter(state.display);
+
+
 
     inputIngredient.dispatchEvent(new Event('input'));
     inputAppareils.dispatchEvent(new Event('input'));
@@ -150,12 +115,23 @@ function globalSearch() {
 
 }
 
+function filter(data) {
+    let res = [];
+    for (let item of data) {
+        if (!res.includes(item)) {
+            res.push(item);
+        }
+    }
+    return res;
+}
+
+
 function checkWordIngredient(input, r) {
     let bool = false;
 
-    r.ingredients.forEach((i) => {
+    for (let i of r.ingredients) {
         if (i.includes(input)) bool = true;
-    })
+    }
 
     return bool;
 }
@@ -164,17 +140,20 @@ function checkIngredients(data) {
     let bool = true;
     let arr = [];
     let check = [];
-    data.ingredients.forEach((ingredient) => arr.push(ingredient[0]));
+
+    for (let ingredient of data.ingredients) {
+        arr.push(ingredient[0])
+    }
 
     if (state.ingredients.length > 0) {
-        state.ingredients.forEach((i) => {
-            arr.filter((item, index) => arr.indexOf(item) === index);
+
+        for (let i of state.ingredients) {
             if (arr.includes(i)) {
                 check.push(i);
             } else {
                 bool = false;
             }
-        })
+        }
 
         if (arr.length == check.length) bool = true;
     }
@@ -184,14 +163,15 @@ function checkIngredients(data) {
 
 function checkAppareils(data) {
     let bool = true;
+
     if (state.appareils.length > 0) {
-        state.appareils.forEach((a) => {
+        for (let a of state.appareils) {
             if (data.appareils == a) {
                 bool = true;
             } else {
                 bool = false;
             }
-        })
+        }
     }
 
     if (state.appareils.length > 1) bool = false;
@@ -202,14 +182,16 @@ function checkAppareils(data) {
 function checkUstensils(data) {
     let bool = true;
     let check = [];
+
     if (state.ustensils.length > 0) {
-        state.ustensils.forEach((u) => {
+
+        for (let u of state.ustensils) {
             if (data.ustensils.includes(u)) {
                 check.push(u);
             } else {
                 bool = false;
             }
-        })
+        }
 
         if (check.length == state.ustensils.length) bool = true;
     }
@@ -281,12 +263,9 @@ function setFilterInput(i, a, u) {
             });
         }
 
-        console.log(data);
-
         if (selected.length > 0) {
             selected.forEach((filtre) => data = data.filter((drop) => drop.trim() != filtre.textContent.trim()));
         }
-        console.log(data);
 
         fillFilterDrop(dropAppareils, data, 'appareil');
     });
