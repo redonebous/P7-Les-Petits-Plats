@@ -1,4 +1,3 @@
-import { recipes } from "../data/recipes.js";
 import { getRecettes, getIngredients, getAppareils, getUstensils } from "./dataProvider.js";
 import { getCard } from "../factories/card.js";
 import { setFilterInput, setWordSearch, setDropDownFilter, setBtnDrop } from "./search.js";
