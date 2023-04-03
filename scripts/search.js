@@ -1,5 +1,5 @@
 import { getCard } from "../factories/card.js";
-import { getRecettes, getIngredients, getAppareils, getUstensils, handleUpperCase } from "./dataProvider.js";
+import { getRecettes } from "./dataProvider.js";
 
 let state = {
 
@@ -40,7 +40,7 @@ function setWordSearch() {
 
 
 function removeFilterSearch(span) {
-    span.addEventListener('click', (e) => {
+    span.addEventListener('click', () => {
         if (span.classList.contains('select-ingredient')) {
             state.ingredients = state.ingredients.filter((i) => span.innerText != i);
         }
@@ -305,7 +305,7 @@ function fillFilterDrop(drop, data, type) {
 
 
 // Gère l'ouverture et la fermeture du dropdown des filtres
-function setDropDownFilter(i, a, u) {
+function setDropDownFilter() {
     const openDrops = document.querySelectorAll('.open-drop');
     const inputFilters = document.querySelectorAll('.input-filtre');
     const filtres = document.querySelectorAll('.filtre');
@@ -390,7 +390,7 @@ function setBtnDrop(btn) {
 
 // Gère l'envoi du filtre depuis l'encart des filtres jusqu'au dropdown
 function setSelectedDrop(span) {
-    span.addEventListener('click', (e) => {
+    span.addEventListener('click', () => {
         let btnNew = document.createElement('button')
         btnNew.innerText = span.innerText;
         btnNew.classList.add('btn-filtre');
